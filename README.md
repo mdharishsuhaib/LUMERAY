@@ -190,13 +190,13 @@ Charts and data visualization
 AI-based spending recommendations
 
 
-**👨‍💻 Author**
+**👨‍💻 Author:**
 **Mohammed Haris Suhaib**
 
 
-**GitHub**
+**GitHub:**
 https://github.com/mdharishsuhaib
 
 
-**⭐ Show Your Support**
+**⭐ Show Your Support:**
 If you like this project, please consider giving it a star on GitHub ⭐
