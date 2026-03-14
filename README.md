@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Project Setup
     
     To run this project, follow these steps:
@@ -19,4 +18,3 @@ MySQL
 JWT Authentication  
 bcrypt Security  
 Tailwind CSS
->>>>>>> 67f3b9230376baf47d3e5b9e9ee8801a6a969d74
