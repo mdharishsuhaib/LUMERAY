@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const API = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://lumeray.onrender.com/",
 });
 
 // Add a request interceptor to attach the token
@@ -15,4 +15,4 @@ API.interceptors.request.use((config) => {
 
 export default API;
 
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://lumeray.onrender.com/";
