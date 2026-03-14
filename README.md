@@ -4,7 +4,7 @@ LUMERAY is a full-stack smart expense tracking web application that helps users 
 
 The project demonstrates secure authentication, REST API development, database integration, and a modern React UI.
 
-# 🚀 Features
+**🚀 Features**
 
 User Registration and Login
 
@@ -22,8 +22,8 @@ MySQL database integration
 
 Responsive design
 
-# 🛠 Tech Stack
-# Frontend
+**🛠 Tech Stack**
+**Frontend**
 
 React
 
@@ -35,7 +35,7 @@ Axios
 
 Vite
 
-# Backend
+**Backend**
 
 Node.js
 
@@ -45,11 +45,11 @@ bcrypt
 
 jsonwebtoken
 
-# Database
+**Database**
 
 MySQL
 
-# 📂 Project Structure
+**📂 Project Structure**
 LUMERAY
 │
 ├── backend
@@ -69,19 +69,18 @@ LUMERAY
 ├── package.json
 └── README.md
 
-# ⚙️ Installation & Setup
+**⚙️ Installation & Setup**
 
 Follow these steps to run the project locally.
 
-# 1️⃣ Clone the Repository
+**1️⃣ Clone the Repository**
 git clone https://github.com/mdharishsuhaib/LUMERAY.git
 cd LUMERAY
 
-# 2️⃣ Install Frontend Dependencies
+**2️⃣ Install Frontend Dependencies**
 npm install
 
-# 3️⃣ Install Backend Dependencies
-
+**3️⃣ Install Backend Dependencies**
 Navigate to backend folder:
 
 cd backend
@@ -90,7 +89,7 @@ Install packages:
 
 npm install
 
-# 4️⃣ Setup MySQL Database
+**4️⃣ Setup MySQL Database**
 
 Open MySQL and create a database:
 
@@ -109,7 +108,7 @@ CREATE TABLE users (
   password VARCHAR(255)
 );
 
-# 5️⃣ Setup Environment Variables
+**5️⃣ Setup Environment Variables**
 
 Inside the **backend folder**, create a file:
 
@@ -124,7 +123,7 @@ DB_PASSWORD=your_mysql_password
 DB_NAME=lumeray
 JWT_SECRET=your_secret_key
 
-# 6️⃣ Run the Backend Server
+**6️⃣ Run the Backend Server**
 
 Inside backend folder:
 
@@ -134,7 +133,7 @@ Backend will start on:
 
 http://localhost:5000
 
-# 7️⃣ Run the Frontend
+**7️⃣ Run the Frontend**
 
 Go back to the main project folder:
 
@@ -148,7 +147,7 @@ The application will run on:
 
 http://localhost:5173
 
-# 🔐 Authentication Flow
+**🔐 Authentication Flow**
 
 User registers a new account.
 
@@ -160,7 +159,7 @@ Backend generates a **JWT token**.
 
 Frontend stores the token for authenticated requests.
 
-# 📊 Future Improvements
+**📊 Future Improvements**
 
 Expense CRUD operations
 
@@ -174,11 +173,11 @@ Charts and data visualization
 
 AI-based spending recommendations
 
-# 👨‍💻 Author
+**👨‍💻 Author**
 **Mohammed Haris Suhaib**
 
-# GitHub
+**GitHub**
 https://github.com/mdharishsuhaib
 
-# ⭐ Show Your Support
+**⭐ Show Your Support**
 If you like this project, please consider giving it a star on GitHub ⭐
