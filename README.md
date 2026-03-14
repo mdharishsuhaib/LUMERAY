@@ -1,4 +1,4 @@
-# LUMERAY – Smart Expense Tracker 💡
+# LUMERAY – Smart Expense Tracker
 
 LUMERAY is a full-stack smart expense tracking web application that helps users manage their personal expenses, track spending, and visualize financial habits through a clean and modern dashboard.
 
