@@ -38,16 +38,18 @@ export const Register = () => {
   console.log("CLICKED REGISTER");
 
   try {
-    const res = await API.post("/signup", { name, email, password });
+  await API.post('/signup', { name, email, password });
 
-    console.log("REGISTER RESPONSE:", res.data);
+  // Auto login after signup
+  const res = await API.post('/login', { email, password });
 
-    alert("Signup success");
+  login(res.data.token, { name, email });
+  navigate('/dashboard');
 
-  } catch (err) {
-    console.error("REGISTER ERROR:", err);
-    alert("Signup failed");
-  }
+} catch (err: any) {
+  console.error("REGISTER ERROR:", err);
+  setError("Signup failed");
+}
 };
 
   return (
