@@ -32,29 +32,28 @@ export const Register = () => {
     return true;
   };
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = async (e) => {
   e.preventDefault();
-  setError('');
 
-  if (!validateForm()) return;
-
-  setLoading(true);
+  console.log("CLICKED REGISTER");
 
   try {
-    await API.post('/signup', { name, email, password });
+    const res = await API.post("/signup", {
+      name,
+      email,
+      password,
+    });
 
-    const res = await API.post('/login', { email, password });
+    console.log("REGISTER RESPONSE:", res.data);
 
-    login(res.data.token, { name, email });
-    navigate('/dashboard');
+    alert("Signup success");
 
-  } catch (err: any) {
-    console.error("❌ ERROR:", err.response?.data || err.message);
-    setError(err.response?.data?.error || "Signup failed");
-  } finally {
-    setLoading(false);
+  } catch (err) {
+    console.error("REGISTER ERROR:", err);
+    alert("Signup failed");
   }
 };
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
