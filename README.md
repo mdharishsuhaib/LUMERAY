@@ -101,12 +101,16 @@ Follow these steps to run the project locally.
 
 
 **1️⃣ Clone the Repository**
+
 git clone 
+
 https://github.com/mdharishsuhaib/LUMERAY.git
+
 cd LUMERAY
 
 
 **2️⃣ Install Frontend Dependencies**
+
 npm install
 
 
