@@ -5,6 +5,8 @@ LUMERAY is a full-stack smart expense tracking web application that helps users 
 The project demonstrates secure authentication, REST API development, database integration, and a modern React UI.
 
 
+
+
 **🌐 Live Demo**
 
 👉 **Frontend:**
@@ -12,6 +14,8 @@ https://lumeray-app.netlify.app/
 
 👉 **Backend:**
 https://lumeray.onrender.com
+
+
 
 
 **🚀 Features**
@@ -31,6 +35,8 @@ RESTful API architecture
 MySQL database integration
 
 Responsive design
+
+
 
 
 **🛠 Tech Stack**
@@ -64,6 +70,8 @@ jsonwebtoken
 MySQL
 
 
+
+
 **📂 Project Structure**
 LUMERAY
 │
@@ -83,6 +91,8 @@ LUMERAY
 ├── public
 ├── package.json
 └── README.md
+
+
 
 
 **⚙️ Installation & Setup**
@@ -175,6 +185,8 @@ Frontend will run on:
 http://localhost:5173
 
 
+
+
 **🔐 Authentication Flow**
 
 User registers a new account.
@@ -188,6 +200,8 @@ Backend generates a **JWT token**.
 Frontend stores the token for authenticated requests.
 
 
+
+
 **📊 Future Improvements**
 
 Smart financial insights
@@ -195,12 +209,18 @@ Smart financial insights
 AI-based spending recommendations
 
 
+
+
 **👨‍💻 Author:**
 **MOHAMMED HARIS SUHAIB M**
 
 
+
+
 **GitHub:**
 https://github.com/mdharishsuhaib
+
+
 
 
 **⭐ Show Your Support:**
