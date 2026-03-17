@@ -40,11 +40,10 @@ export const Register = () => {
   try {
   await API.post('/signup', { name, email, password });
 
-  // Auto login after signup
-  const res = await API.post('/login', { email, password });
+const res = await API.post('/login', { email, password });
 
-  login(res.data.token, { name, email });
-  navigate('/dashboard');
+login(res.data.token, { name, email });
+navigate('/dashboard');
 
 } catch (err: any) {
   console.error("REGISTER ERROR:", err);
