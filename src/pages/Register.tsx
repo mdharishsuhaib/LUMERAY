@@ -33,28 +33,28 @@ export const Register = () => {
   };
 
   const handleRegister = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    
-    if (!validateForm()) return;
+  e.preventDefault();
+  setError('');
 
-    setLoading(true);
-    
-    try {
-      await API.post('/auth/register', { name, email, password });
-      // Auto login after register
-      const res = await API.post('/auth/login', { email, password });
-      login(res.data.token, { name, email });
-      navigate('/dashboard');
-    } catch (err: any) {
-      console.warn("Backend register failed, using mock register for preview");
-      login("mock-jwt-token", { name, email });
-      navigate('/dashboard');
-    } finally {
-      setLoading(false);
-    }
-  };
+  if (!validateForm()) return;
 
+  setLoading(true);
+
+  try {
+    await API.post('/signup', { name, email, password });
+
+    const res = await API.post('/login', { email, password });
+
+    login(res.data.token, { name, email });
+    navigate('/dashboard');
+
+  } catch (err: any) {
+    console.error("❌ ERROR:", err.response?.data || err.message);
+    setError(err.response?.data?.error || "Signup failed");
+  } finally {
+    setLoading(false);
+  }
+};
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
