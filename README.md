@@ -75,24 +75,21 @@ MySQL
 **📂 Project Structure**
 
 
-'''LUMERAY
-│
-├── backend
-│   ├── routes
-│   │   └── auth.js
-│   ├── db.js
-│   ├── server.js
-│   └── package.json
-│
-├── src
-│   ├── pages
-│   ├── components
-│   ├── context
-│   └── App.tsx
-│
-├── public
-├── package.json
-└── README.md'''
+| Folder/File | Description |
+|------------|------------|
+| **backend/** | Backend server (Node.js + Express) |
+| ├── routes/auth.js | Authentication routes (login/signup) |
+| ├── db.js | Database connection |
+| ├── server.js | Main backend entry point |
+| └── package.json | Backend dependencies |
+| **src/** | Frontend source code |
+| ├── pages/ | Application pages |
+| ├── components/ | Reusable UI components |
+| ├── context/ | Global state (Auth, etc.) |
+| └── App.tsx | Main React component |
+| **public/** | Static assets |
+| **package.json** | Frontend dependencies |
+| **README.md** | Project documentation |
 
 
 
