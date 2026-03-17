@@ -41,12 +41,11 @@ export const Login = () => {
       const res = await API.post('/auth/login', { email, password });
       login(res.data.token, res.data.user);
       navigate('/dashboard');
-    } catch (err: any) {
-      // Fallback for preview without backend
-      console.warn("Backend login failed, using mock login for preview");
-      login("mock-jwt-token", { name: "Demo User", email });
-      navigate('/dashboard');
-    } finally {
+    } 
+    catch (err: any) {
+  console.error("LOGIN ERROR:", err.response?.data || err.message);
+  setError(err.response?.data?.error || "Login failed");
+    }finally {
       setLoading(false);
     }
   };
