@@ -115,6 +115,7 @@ npm install
 
 
 **3️⃣ Install Backend Dependencies**
+
 Navigate to backend folder:
 
 cd backend
@@ -153,7 +154,9 @@ Inside the **backend folder**, create a file:
 Add the following variables:
 
 PORT=5000
+
 **MySQL DB (Local)**
+
 DB_HOST=your_host
 
 DB_USER=your_username
