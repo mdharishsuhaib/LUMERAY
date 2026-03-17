@@ -149,13 +149,17 @@ Inside the **backend folder**, create a file:
 Add the following variables:
 
 PORT=5000
-# MySQL DB (Local)
+**MySQL DB (Local)**
 DB_HOST=your_host
+
 DB_USER=your_username
+
 DB_PASSWORD=your_password
+
 DB_NAME=lumeray
 
-# JWT Authentication
+**JWT Authentication**
+
 JWT_SECRET=your_secret_key
 
 
