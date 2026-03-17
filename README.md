@@ -5,6 +5,15 @@ LUMERAY is a full-stack smart expense tracking web application that helps users 
 The project demonstrates secure authentication, REST API development, database integration, and a modern React UI.
 
 
+**🌐 Live Demo**
+
+👉 **Frontend:**
+https://lumeray-app.netlify.app/
+
+👉 **Backend:**
+https://lumeray.onrender.com
+
+
 **🚀 Features**
 
 User Registration and Login
@@ -82,7 +91,8 @@ Follow these steps to run the project locally.
 
 
 **1️⃣ Clone the Repository**
-git clone https://github.com/mdharishsuhaib/LUMERAY.git
+git clone 
+https://github.com/mdharishsuhaib/LUMERAY.git
 cd LUMERAY
 
 
@@ -102,11 +112,11 @@ npm install
 
 **4️⃣ Setup MySQL Database**
 
-Open MySQL and create a database:
+👉 **If using Local MySQL**
+
+Open MySQL and run:
 
 CREATE DATABASE lumeray;
-
-Use the database:
 
 USE lumeray;
 
@@ -129,10 +139,13 @@ Inside the **backend folder**, create a file:
 Add the following variables:
 
 PORT=5000
-DB_HOST=localhost
-DB_USER=your_mysql_username
-DB_PASSWORD=your_mysql_password
+# MySQL DB (Local)
+DB_HOST=your_host
+DB_USER=your_username
+DB_PASSWORD=your_password
 DB_NAME=lumeray
+
+# JWT Authentication
 JWT_SECRET=your_secret_key
 
 
@@ -142,14 +155,14 @@ Inside backend folder:
 
 node server.js
 
-Backend will start on:
+Backend will run on:
 
 http://localhost:5000
 
 
 **7️⃣ Run the Frontend**
 
-Go back to the main project folder:
+Go back to the root folder:
 
 cd ..
 
@@ -157,7 +170,7 @@ Start the frontend server:
 
 npm run dev
 
-The application will run on:
+Frontend will run on:
 
 http://localhost:5173
 
@@ -177,21 +190,13 @@ Frontend stores the token for authenticated requests.
 
 **📊 Future Improvements**
 
-Expense CRUD operations
-
-Spending analytics dashboard
-
-Category-based expense tracking
-
 Smart financial insights
-
-Charts and data visualization
 
 AI-based spending recommendations
 
 
 **👨‍💻 Author:**
-**Mohammed Haris Suhaib**
+**MOHAMMED HARIS SUHAIB M**
 
 
 **GitHub:**
