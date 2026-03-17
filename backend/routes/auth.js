@@ -17,24 +17,30 @@ router.post("/signup", async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     db.query(
-  "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
-  [name, email, hashedPassword],
-  (err, result) => {
-    if (err) {
-      console.error("INSERT ERROR:", err);
+      "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+      [name, email, hashedPassword],
+      (err, result) => {
+        if (err) {
+          console.error("INSERT ERROR:", err);
 
-      if (err.code === "ER_DUP_ENTRY") {
-        return res.status(400).json({ error: "User already exists" });
+          if (err.code === "ER_DUP_ENTRY") {
+            return res.status(400).json({ error: "User already exists" });
+          }
+
+          return res.status(500).json({ error: "Database error" });
+        }
+
+        console.log("USER INSERTED");
+        res.json({ message: "Signup successful" });
       }
-
-      return res.status(500).json({ error: "Database error" });
-    }
-
-    console.log("USER INSERTED");
-    res.json({ message: "Signup successful" });
+    );
+  } catch (error) {
+    console.error("HASH ERROR:", error);
+    res.status(500).json({ error: error.message });
   }
-);
+});
 
+// ✅ LOGIN ROUTE
 router.post("/login", (req, res) => {
   console.log("Login API HIT");
 
