@@ -38,7 +38,7 @@ export const Login = () => {
     setLoading(true);
     
     try {
-      const res = await API.post('/auth/login', { email, password });
+      const res = await API.post("/login", { email, password });
       login(res.data.token, res.data.user);
       navigate('/dashboard');
     } 
