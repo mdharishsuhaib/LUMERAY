@@ -46,8 +46,8 @@ login(res.data.token, { name, email });
 navigate('/dashboard');
 
 } catch (err: any) {
-  console.error("REGISTER ERROR:", err);
-  setError("Signup failed");
+  console.error("ERROR:", err.response?.data);
+  setError(err.response?.data?.error || "Signup failed");
 }
 };
 
