@@ -21,6 +21,14 @@ app.get("/api", (req, res) => {
   res.send("LUMERAY API Running");
 });
 
+app.get('/api/expenses', async (req, res) => {
+  try {
+    res.json([]); // temporary safe response
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 const PORT = process.env.PORT || 5000;
 
 /* Start Server */
