@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { LayoutDashboard, Receipt, PieChart, Settings, LogOut, Zap, ChevronUp, ChevronDown } from 'lucide-react';
+import { LayoutDashboard, Receipt, PieChart, Settings, LogOut, Zap, ChevronUp, ChevronDown, Menu, X } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 const navItems = [
@@ -17,6 +17,12 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
   
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
 
   const handleLogout = () => {
     logout();
@@ -24,17 +30,53 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className="w-64 bg-white border-r border-gray-200 flex flex-col relative z-20">
-        <div className="p-6 flex items-center gap-2">
-          <div className="bg-indigo-600 p-2 rounded-lg">
+    <div className="flex h-screen bg-gray-50 overflow-hidden">
+      {/* Mobile Header */}
+      <div className="md:hidden flex items-center justify-between bg-white border-b border-gray-200 p-4 absolute top-0 left-0 right-0 z-20 h-16">
+        <div className="flex items-center gap-2">
+          <div className="bg-indigo-600 p-1.5 rounded-lg">
             <Zap className="w-5 h-5 text-white" />
           </div>
           <span className="text-xl font-bold text-gray-900 tracking-tight">LUMERAY</span>
         </div>
+        <button 
+          onClick={() => setIsMobileMenuOpen(true)} 
+          className="p-2 -mr-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+        >
+          <Menu className="w-6 h-6" />
+        </button>
+      </div>
+
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 md:hidden transition-opacity"
+          onClick={() => setIsMobileMenuOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside className={`
+        fixed inset-y-0 left-0 z-40 w-64 bg-white border-r border-gray-200 flex flex-col transform transition-transform duration-300 ease-in-out
+        md:relative md:translate-x-0
+        ${isMobileMenuOpen ? 'translate-x-0' : '-translate-x-full'}
+      `}>
+        <div className="p-6 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="bg-indigo-600 p-2 rounded-lg">
+              <Zap className="w-5 h-5 text-white" />
+            </div>
+            <span className="text-xl font-bold text-gray-900 tracking-tight">LUMERAY</span>
+          </div>
+          <button 
+            className="md:hidden p-1 text-gray-500 hover:bg-gray-100 rounded-lg"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
         
-        <nav className="flex-1 px-4 space-y-1 mt-4">
+        <nav className="flex-1 px-4 space-y-1 mt-2 overflow-y-auto">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -58,7 +100,7 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
         <div className="p-4 border-t border-gray-200 relative">
           {/* Profile Dropdown Menu */}
           {isDropdownOpen && (
-            <div className="absolute bottom-full left-4 right-4 mb-2 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden z-30">
+            <div className="absolute bottom-full left-4 right-4 mb-2 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden z-50">
               <Link 
                 to="/dashboard/settings" 
                 onClick={() => setIsDropdownOpen(false)}
@@ -99,8 +141,8 @@ export const DashboardLayout: React.FC<{ children: React.ReactNode }> = ({ child
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 overflow-auto relative z-10">
-        <div className="p-8 max-w-6xl mx-auto">
+      <main className="flex-1 overflow-auto relative z-10 pt-16 md:pt-0">
+        <div className="p-4 md:p-8 max-w-6xl mx-auto">
           {children}
         </div>
       </main>
