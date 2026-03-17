@@ -25,5 +25,5 @@ const PORT = process.env.PORT || 5000;
 
 /* Start Server */
 app.listen(PORT, () => {
-  console.log(`🚀 LUMERAY backend running on http://localhost:${PORT}`);
+  console.log(`🚀 LUMERAY backend running on port ${PORT}`);
 });
