@@ -38,11 +38,7 @@ export const Register = () => {
   console.log("CLICKED REGISTER");
 
   try {
-    const res = await API.post("/signup", {
-      name,
-      email,
-      password,
-    });
+    const res = await API.post("/signup", { name, email, password });
 
     console.log("REGISTER RESPONSE:", res.data);
 

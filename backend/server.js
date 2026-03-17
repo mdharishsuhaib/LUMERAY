@@ -10,7 +10,7 @@ app.use(express.json());
 
 /* Routes */
 const authRoutes = require("./routes/auth");
-app.use("/api/auth", authRoutes);
+app.use("/api", authRoutes);
 
 app.get("/", (req, res) => {
   res.send("🚀 LUMERAY Backend Running");
