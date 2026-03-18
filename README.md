@@ -10,7 +10,7 @@ The project demonstrates secure authentication, REST API development, database i
 **🌐 Project Live**
 
 👉 **Frontend:**
-https://lumeray-app.netlify.app/ / https://lumeray.mdharishsuhaib.workers.dev/
+https://lumeray.mdharishsuhaib.workers.dev/
 
 👉 **Backend:**
 https://lumeray.onrender.com
