@@ -1,34 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
 import { DollarSign, Plus, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
 
 export const Overview = () => {
-  const { expenses, fetchExpenses, addExpense } = useExpenses();
+  const { expenses, addExpense, loading } = useExpenses();
   const [amount, setAmount] = useState('');
   const [category, setCategory] = useState('Food');
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
 
-  useEffect(() => {
-    fetchExpenses();
-  }, [fetchExpenses]);
+  // ✅ FIX: Removed useEffect(() => { fetchExpenses() }) here.
+  // ExpenseContext already fetches on mount — calling it again per-page
+  // caused a race condition where the fallback wiped in-memory state.
 
-  const totalExpense = expenses.length > 0 
-    ? expenses.reduce((sum, exp) => sum + Number(exp.amount), 0) 
-    : 0;
+  const totalExpense = expenses.reduce((sum, exp) => sum + Number(exp.amount), 0);
 
   const handleAddExpense = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !description) return;
-    
+
     await addExpense({
       amount: Number(amount),
       category,
       description,
       date
     });
-    
+
     setAmount('');
     setDescription('');
   };
@@ -36,7 +34,7 @@ export const Overview = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
-      
+
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
@@ -116,9 +114,10 @@ export const Overview = () => {
             </div>
             <button
               type="submit"
-              className="w-full py-2.5 px-4 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors"
+              disabled={loading}
+              className="w-full py-2.5 px-4 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50"
             >
-              Add Expense
+              {loading ? 'Adding...' : 'Add Expense'}
             </button>
           </form>
         </div>

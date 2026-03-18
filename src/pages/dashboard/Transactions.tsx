@@ -1,22 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
 import { Trash2 } from 'lucide-react';
 
 export const Transactions = () => {
-  const { expenses, fetchExpenses, deleteExpense } = useExpenses();
+  const { expenses, deleteExpense, loading } = useExpenses();
 
-  useEffect(() => {
-    fetchExpenses();
-  }, [fetchExpenses]);
+  // ✅ FIX: Removed useEffect(() => { fetchExpenses() }) here.
+  // The context already has the expenses loaded globally. Calling
+  // fetchExpenses() on every page mount was causing a backend round-trip
+  // that — when it failed or was slow — fell back to empty localStorage,
+  // resetting the total to $0. The context's initial useState already
+  // reads from localStorage, so expenses are always available instantly.
 
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">All Transactions</h1>
-      
+
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-        {expenses.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16 text-gray-400">Loading transactions...</div>
+        ) : expenses.length === 0 ? (
           <div className="text-center py-16 text-gray-500">
-            No transactions found. Your total expense is $0.
+            No transactions found. Add your first expense from the Dashboard!
           </div>
         ) : (
           <div className="overflow-x-auto">
