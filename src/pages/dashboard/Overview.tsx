@@ -1,8 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
-import { useCurrency, CURRENCIES, formatAmount } from '../../context/CurrencyContext';
-import { DollarSign, Plus, TrendingUp } from 'lucide-react';
+import { useCurrency, CURRENCIES, getCurrency, formatAmount } from '../../context/CurrencyContext';
+import { DollarSign, Plus, TrendingUp, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
+
+// Custom dropdown — replaces native <select> so it always opens downward
+// and never overlaps content above it.
+const CurrencyDropdown = ({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (code: string) => void;
+}) => {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const selected = getCurrency(value);
+
+  // Close when clicking outside
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative w-28">
+      {/* Trigger button */}
+      <button
+        type="button"
+        onClick={() => setOpen(prev => !prev)}
+        className="w-full flex items-center justify-between gap-1 px-2 py-2 border border-gray-300 rounded-lg bg-gray-50 text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500"
+      >
+        <span>{selected.symbol} {selected.code}</span>
+        <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {/* Dropdown list — always opens downward with z-index scoped to form area */}
+      {open && (
+        <div className="absolute left-0 top-full mt-1 w-44 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-52 overflow-y-auto">
+          {CURRENCIES.map(c => (
+            <button
+              key={c.code}
+              type="button"
+              onClick={() => { onChange(c.code); setOpen(false); }}
+              className={`w-full text-left px-3 py-2 text-sm flex items-center gap-2 hover:bg-indigo-50 transition-colors
+                ${c.code === value ? 'bg-indigo-50 text-indigo-700 font-semibold' : 'text-gray-700'}`}
+            >
+              <span className="w-6 text-center">{c.symbol}</span>
+              <span>{c.code}</span>
+              <span className="text-gray-400 text-xs truncate">{c.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+};
 
 export const Overview = () => {
   const { expenses, addExpense, loading } = useExpenses();
@@ -23,7 +81,6 @@ export const Overview = () => {
     setCurrency(defaultCurrency);
   };
 
-  // Group totals by currency — mixing currencies into one number is misleading
   const totalsByCurrency = expenses.reduce((acc: Record<string, number>, exp) => {
     const c = exp.currency || defaultCurrency;
     acc[c] = (acc[c] || 0) + Number(exp.amount);
@@ -73,7 +130,7 @@ export const Overview = () => {
           </h2>
           <form onSubmit={handleAddExpense} className="space-y-4">
 
-            {/* Amount + Currency selector side by side */}
+            {/* Amount + Currency — custom dropdown opens downward */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Amount & Currency</label>
               <div className="flex gap-2">
@@ -86,17 +143,7 @@ export const Overview = () => {
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500"
                   placeholder="0.00"
                 />
-                <select
-                  value={currency}
-                  onChange={(e) => setCurrency(e.target.value)}
-                  className="w-28 px-2 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 text-sm font-medium bg-gray-50"
-                >
-                  {CURRENCIES.map(c => (
-                    <option key={c.code} value={c.code}>
-                      {c.symbol} {c.code}
-                    </option>
-                  ))}
-                </select>
+                <CurrencyDropdown value={currency} onChange={setCurrency} />
               </div>
               <p className="text-xs text-gray-400 mt-1">
                 Set your default currency in Settings
