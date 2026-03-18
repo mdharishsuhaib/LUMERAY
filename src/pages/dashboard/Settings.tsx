@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { useCurrency, CURRENCIES } from '../../context/CurrencyContext';
 import { User, Mail, Edit2, Save, X, Lock, Globe } from 'lucide-react';
+import API from '../../api';
 
 export const Settings = () => {
   const { user, updateUser } = useAuth();
@@ -11,22 +12,43 @@ export const Settings = () => {
   const [editName, setEditName] = useState(user?.name || '');
   const [editEmail, setEditEmail] = useState(user?.email || '');
   const [editPassword, setEditPassword] = useState('');
+  const [saveError, setSaveError] = useState('');
+  const [saveLoading, setSaveLoading] = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // Currency preference state
   const [selectedCurrency, setSelectedCurrency] = useState(defaultCurrency);
   const [currencySaved, setCurrencySaved] = useState(false);
 
-  const handleSave = (e: React.FormEvent) => {
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateUser({ name: editName, email: editEmail });
-    setEditPassword('');
-    setIsEditing(false);
+    setSaveError('');
+    setSaveLoading(true);
+
+    try {
+      // ✅ Call backend to update name, email, and optionally password
+      const payload: any = { name: editName, email: editEmail };
+      if (editPassword.trim() !== '') payload.password = editPassword;
+
+      const res = await API.put('/user/update', payload);
+
+      // Update local auth state so navbar/profile reflects new name/email immediately
+      updateUser({ name: res.data.user.name, email: res.data.user.email });
+      setSaveSuccess(true);
+      setEditPassword('');
+      setIsEditing(false);
+      setTimeout(() => setSaveSuccess(false), 3000);
+    } catch (err: any) {
+      setSaveError(err.response?.data?.error || 'Failed to update profile. Please try again.');
+    } finally {
+      setSaveLoading(false);
+    }
   };
 
   const handleCancel = () => {
     setEditName(user?.name || '');
     setEditEmail(user?.email || '');
     setEditPassword('');
+    setSaveError('');
     setIsEditing(false);
   };
 
@@ -41,6 +63,12 @@ export const Settings = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Account Settings</h1>
+
+      {saveSuccess && (
+        <div className="bg-green-50 border border-green-200 rounded-xl px-4 py-3 text-sm text-green-700">
+          ✓ Profile updated successfully. You can now log in with your new credentials.
+        </div>
+      )}
 
       {/* ── Currency Preferences ── */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden max-w-2xl">
@@ -79,11 +107,8 @@ export const Settings = () => {
               </button>
             </div>
           </div>
-
           <div className="bg-gray-50 rounded-xl p-4 flex items-center gap-3">
-            <span className="text-2xl font-bold text-indigo-600">
-              {selectedCurrencyObj?.symbol}
-            </span>
+            <span className="text-2xl font-bold text-indigo-600">{selectedCurrencyObj?.symbol}</span>
             <div>
               <p className="font-medium text-gray-900">{selectedCurrencyObj?.name}</p>
               <p className="text-sm text-gray-500">
@@ -99,7 +124,9 @@ export const Settings = () => {
         <div className="p-6 border-b border-gray-100 flex justify-between items-center">
           <div>
             <h2 className="text-lg font-semibold text-gray-900">Profile Information</h2>
-            <p className="text-sm text-gray-500 mt-1">Manage your personal account details and credentials.</p>
+            <p className="text-sm text-gray-500 mt-1">
+              Changes are saved to the database — updated credentials work on next login.
+            </p>
           </div>
           {!isEditing && (
             <button
@@ -126,6 +153,11 @@ export const Settings = () => {
           <div className="pt-4 border-t border-gray-100">
             {isEditing ? (
               <form onSubmit={handleSave} className="space-y-4">
+                {saveError && (
+                  <div className="bg-red-50 border border-red-200 rounded-lg px-4 py-3 text-sm text-red-600">
+                    {saveError}
+                  </div>
+                )}
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
                   <div className="relative">
@@ -177,10 +209,11 @@ export const Settings = () => {
                 <div className="flex gap-3 pt-4">
                   <button
                     type="submit"
-                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium"
+                    disabled={saveLoading}
+                    className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium disabled:opacity-50"
                   >
                     <Save className="w-4 h-4" />
-                    Save Changes
+                    {saveLoading ? 'Saving...' : 'Save Changes'}
                   </button>
                   <button
                     type="button"

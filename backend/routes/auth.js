@@ -1,12 +1,13 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 const db = require("../db");
 
-// ✅ SIGNUP ROUTE
-router.post("/signup", async (req, res) => {
-  console.log("Signup API HIT");
+const JWT_SECRET = process.env.JWT_SECRET || "lumeray_secret";
 
+// ── SIGNUP ──
+router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
 
   if (!name || !email || !password) {
@@ -21,29 +22,23 @@ router.post("/signup", async (req, res) => {
       [name, email, hashedPassword],
       (err, result) => {
         if (err) {
-          console.error("INSERT ERROR:", err);
-
           if (err.code === "ER_DUP_ENTRY") {
             return res.status(400).json({ error: "User already exists" });
           }
-
           return res.status(500).json({ error: "Database error" });
         }
-
-        console.log("USER INSERTED");
         res.json({ message: "Signup successful" });
       }
     );
   } catch (error) {
-    console.error("HASH ERROR:", error);
     res.status(500).json({ error: error.message });
   }
 });
 
-// ✅ LOGIN ROUTE
+// ── LOGIN ──
+// Now returns a real JWT containing the user's DB id,
+// so auth middleware can identify which user is making requests.
 router.post("/login", (req, res) => {
-  console.log("Login API HIT");
-
   const { email, password } = req.body;
 
   db.query(
@@ -51,21 +46,22 @@ router.post("/login", (req, res) => {
     [email],
     async (err, results) => {
       if (err) return res.status(500).json({ error: "DB error" });
-
       if (results.length === 0) {
         return res.status(400).json({ error: "User not found" });
       }
 
       const user = results[0];
-
       const isMatch = await bcrypt.compare(password, user.password);
 
       if (!isMatch) {
         return res.status(400).json({ error: "Invalid password" });
       }
 
+      // ✅ Sign a real JWT with the user's id inside
+      const token = jwt.sign({ id: user.id }, JWT_SECRET, { expiresIn: "7d" });
+
       res.json({
-        token: "dummy-token",
+        token,
         user: { name: user.name, email: user.email },
       });
     }
