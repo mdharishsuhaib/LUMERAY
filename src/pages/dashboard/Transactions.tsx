@@ -1,16 +1,11 @@
 import React from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
+import { useCurrency, formatAmount } from '../../context/CurrencyContext';
 import { Trash2 } from 'lucide-react';
 
 export const Transactions = () => {
   const { expenses, deleteExpense, loading } = useExpenses();
-
-  // ✅ FIX: Removed useEffect(() => { fetchExpenses() }) here.
-  // The context already has the expenses loaded globally. Calling
-  // fetchExpenses() on every page mount was causing a backend round-trip
-  // that — when it failed or was slow — fell back to empty localStorage,
-  // resetting the total to $0. The context's initial useState already
-  // reads from localStorage, so expenses are always available instantly.
+  const { defaultCurrency } = useCurrency();
 
   return (
     <div className="space-y-6">
@@ -45,7 +40,10 @@ export const Transactions = () => {
                         {exp.category}
                       </span>
                     </td>
-                    <td className="p-4 font-semibold text-gray-900">${Number(exp.amount).toFixed(2)}</td>
+                    <td className="p-4 font-semibold text-gray-900">
+                      {/* Show symbol + amount + currency code e.g. ₹500.00 INR */}
+                      {formatAmount(Number(exp.amount), exp.currency || defaultCurrency)}
+                    </td>
                     <td className="p-4 text-right">
                       <button
                         onClick={() => deleteExpense(exp.id)}

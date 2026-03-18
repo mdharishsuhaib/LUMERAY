@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { ExpenseProvider } from './context/ExpenseContext';
+import { CurrencyProvider } from './context/CurrencyContext';
 
 // Pages
 import { Home } from './pages/Home';
@@ -22,45 +23,39 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
 function App() {
   return (
     <AuthProvider>
-      <ExpenseProvider>
-        <Router>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            
-            {/* Protected Dashboard Routes */}
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <DashboardLayout>
-                  <Overview />
-                </DashboardLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard/transactions" element={
-              <ProtectedRoute>
-                <DashboardLayout>
-                  <Transactions />
-                </DashboardLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard/analytics" element={
-              <ProtectedRoute>
-                <DashboardLayout>
-                  <Analytics />
-                </DashboardLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard/settings" element={
-              <ProtectedRoute>
-                <DashboardLayout>
-                  <Settings />
-                </DashboardLayout>
-              </ProtectedRoute>
-            } />
-          </Routes>
-        </Router>
-      </ExpenseProvider>
+      <CurrencyProvider>
+        <ExpenseProvider>
+          <Router>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+
+              {/* Protected Dashboard Routes */}
+              <Route path="/dashboard" element={
+                <ProtectedRoute>
+                  <DashboardLayout><Overview /></DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/transactions" element={
+                <ProtectedRoute>
+                  <DashboardLayout><Transactions /></DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/analytics" element={
+                <ProtectedRoute>
+                  <DashboardLayout><Analytics /></DashboardLayout>
+                </ProtectedRoute>
+              } />
+              <Route path="/dashboard/settings" element={
+                <ProtectedRoute>
+                  <DashboardLayout><Settings /></DashboardLayout>
+                </ProtectedRoute>
+              } />
+            </Routes>
+          </Router>
+        </ExpenseProvider>
+      </CurrencyProvider>
     </AuthProvider>
   );
 }

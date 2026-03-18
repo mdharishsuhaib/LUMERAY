@@ -1,17 +1,23 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import { User, Mail, Edit2, Save, X, Lock } from 'lucide-react';
+import { useCurrency, CURRENCIES } from '../../context/CurrencyContext';
+import { User, Mail, Edit2, Save, X, Lock, Globe } from 'lucide-react';
 
 export const Settings = () => {
   const { user, updateUser } = useAuth();
+  const { defaultCurrency, setDefaultCurrency } = useCurrency();
+
   const [isEditing, setIsEditing] = useState(false);
   const [editName, setEditName] = useState(user?.name || '');
   const [editEmail, setEditEmail] = useState(user?.email || '');
   const [editPassword, setEditPassword] = useState('');
 
+  // Currency preference state
+  const [selectedCurrency, setSelectedCurrency] = useState(defaultCurrency);
+  const [currencySaved, setCurrencySaved] = useState(false);
+
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would also send the new password to the backend here if it's not empty
     updateUser({ name: editName, email: editEmail });
     setEditPassword('');
     setIsEditing(false);
@@ -24,10 +30,71 @@ export const Settings = () => {
     setIsEditing(false);
   };
 
+  const handleSaveCurrency = () => {
+    setDefaultCurrency(selectedCurrency);
+    setCurrencySaved(true);
+    setTimeout(() => setCurrencySaved(false), 2000);
+  };
+
+  const selectedCurrencyObj = CURRENCIES.find(c => c.code === selectedCurrency);
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Account Settings</h1>
-      
+
+      {/* ── Currency Preferences ── */}
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden max-w-2xl">
+        <div className="p-6 border-b border-gray-100">
+          <h2 className="text-lg font-semibold text-gray-900">Currency Preferences</h2>
+          <p className="text-sm text-gray-500 mt-1">
+            Set your default currency. You can still choose a different currency per expense when adding one.
+          </p>
+        </div>
+        <div className="p-6 space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Default Currency</label>
+            <div className="flex gap-3 items-center">
+              <div className="relative flex-1">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <Globe className="h-5 w-5 text-gray-400" />
+                </div>
+                <select
+                  value={selectedCurrency}
+                  onChange={(e) => { setSelectedCurrency(e.target.value); setCurrencySaved(false); }}
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  {CURRENCIES.map(c => (
+                    <option key={c.code} value={c.code}>
+                      {c.symbol} {c.code} — {c.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <button
+                onClick={handleSaveCurrency}
+                className="flex items-center gap-2 px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-sm font-medium whitespace-nowrap"
+              >
+                <Save className="w-4 h-4" />
+                {currencySaved ? 'Saved ✓' : 'Save'}
+              </button>
+            </div>
+          </div>
+
+          <div className="bg-gray-50 rounded-xl p-4 flex items-center gap-3">
+            <span className="text-2xl font-bold text-indigo-600">
+              {selectedCurrencyObj?.symbol}
+            </span>
+            <div>
+              <p className="font-medium text-gray-900">{selectedCurrencyObj?.name}</p>
+              <p className="text-sm text-gray-500">
+                New expenses will default to {selectedCurrencyObj?.code}. Existing expenses keep their original currency.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Profile Information ── */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden max-w-2xl">
         <div className="p-6 border-b border-gray-100 flex justify-between items-center">
           <div>
@@ -35,16 +102,16 @@ export const Settings = () => {
             <p className="text-sm text-gray-500 mt-1">Manage your personal account details and credentials.</p>
           </div>
           {!isEditing && (
-            <button 
+            <button
               onClick={() => setIsEditing(true)}
               className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors"
             >
               <Edit2 className="w-4 h-4" />
-              Reset Profile
+              Edit Profile
             </button>
           )}
         </div>
-        
+
         <div className="p-6 space-y-6">
           <div className="flex items-center gap-4">
             <div className="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center text-indigo-700 text-2xl font-bold">
@@ -134,7 +201,6 @@ export const Settings = () => {
                     <p className="font-medium">{user?.name || 'Not provided'}</p>
                   </div>
                 </div>
-                
                 <div className="flex items-center gap-3 text-gray-700">
                   <Mail className="w-5 h-5 text-gray-400" />
                   <div>
@@ -142,7 +208,6 @@ export const Settings = () => {
                     <p className="font-medium">{user?.email || 'Not provided'}</p>
                   </div>
                 </div>
-
                 <div className="flex items-center gap-3 text-gray-700">
                   <Lock className="w-5 h-5 text-gray-400" />
                   <div>
