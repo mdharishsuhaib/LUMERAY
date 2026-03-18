@@ -1,11 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useExpenses } from '../../context/ExpenseContext';
 import { useCurrency, CURRENCIES, getCurrency, formatAmount } from '../../context/CurrencyContext';
 import { DollarSign, Plus, TrendingUp, ChevronDown } from 'lucide-react';
 import { format } from 'date-fns';
 
-// Custom dropdown — replaces native <select> so it always opens downward
-// and never overlaps content above it.
+// Custom dropdown — opens downward, never overlaps content above
 const CurrencyDropdown = ({
   value,
   onChange,
@@ -14,15 +13,12 @@ const CurrencyDropdown = ({
   onChange: (code: string) => void;
 }) => {
   const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = React.useRef<HTMLDivElement>(null);
   const selected = getCurrency(value);
 
-  // Close when clicking outside
-  useEffect(() => {
+  React.useEffect(() => {
     const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
@@ -30,7 +26,6 @@ const CurrencyDropdown = ({
 
   return (
     <div ref={ref} className="relative w-28">
-      {/* Trigger button */}
       <button
         type="button"
         onClick={() => setOpen(prev => !prev)}
@@ -39,8 +34,6 @@ const CurrencyDropdown = ({
         <span>{selected.symbol} {selected.code}</span>
         <ChevronDown className={`w-3 h-3 text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
-
-      {/* Dropdown list — always opens downward with z-index scoped to form area */}
       {open && (
         <div className="absolute left-0 top-full mt-1 w-44 bg-white border border-gray-200 rounded-xl shadow-lg z-50 max-h-52 overflow-y-auto">
           {CURRENCIES.map(c => (
@@ -63,7 +56,7 @@ const CurrencyDropdown = ({
 };
 
 export const Overview = () => {
-  const { expenses, addExpense, loading } = useExpenses();
+  const { expenses, addExpense, loading, error } = useExpenses();
   const { defaultCurrency } = useCurrency();
 
   const [amount, setAmount] = useState('');
@@ -71,14 +64,22 @@ export const Overview = () => {
   const [description, setDescription] = useState('');
   const [date, setDate] = useState(format(new Date(), 'yyyy-MM-dd'));
   const [currency, setCurrency] = useState(defaultCurrency);
+  const [adding, setAdding] = useState(false);
 
   const handleAddExpense = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!amount || !description) return;
-    await addExpense({ amount: Number(amount), category, description, date, currency });
-    setAmount('');
-    setDescription('');
-    setCurrency(defaultCurrency);
+    setAdding(true);
+    try {
+      await addExpense({ amount: Number(amount), category, description, date, currency });
+      setAmount('');
+      setDescription('');
+      setCurrency(defaultCurrency);
+    } catch {
+      // error is shown via context's error state below
+    } finally {
+      setAdding(false);
+    }
   };
 
   const totalsByCurrency = expenses.reduce((acc: Record<string, number>, exp) => {
@@ -90,6 +91,13 @@ export const Overview = () => {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Dashboard Overview</h1>
+
+      {/* Global error banner */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-sm text-red-600">
+          ⚠️ {error}
+        </div>
+      )}
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -129,8 +137,6 @@ export const Overview = () => {
             <Plus className="w-5 h-5 text-indigo-600" /> Add New Expense
           </h2>
           <form onSubmit={handleAddExpense} className="space-y-4">
-
-            {/* Amount + Currency — custom dropdown opens downward */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Amount & Currency</label>
               <div className="flex gap-2">
@@ -145,9 +151,7 @@ export const Overview = () => {
                 />
                 <CurrencyDropdown value={currency} onChange={setCurrency} />
               </div>
-              <p className="text-xs text-gray-400 mt-1">
-                Set your default currency in Settings
-              </p>
+              <p className="text-xs text-gray-400 mt-1">Set your default currency in Settings</p>
             </div>
 
             <div>
@@ -191,10 +195,10 @@ export const Overview = () => {
 
             <button
               type="submit"
-              disabled={loading}
+              disabled={adding || loading}
               className="w-full py-2.5 px-4 bg-indigo-600 text-white rounded-lg font-medium hover:bg-indigo-700 transition-colors disabled:opacity-50"
             >
-              {loading ? 'Adding...' : 'Add Expense'}
+              {adding ? 'Adding...' : 'Add Expense'}
             </button>
           </form>
         </div>
