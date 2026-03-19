@@ -25,12 +25,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const login = (token: string, userData?: any) => {
+    // ✅ FIX: Clear previous account's expenses when a new user logs in
+    localStorage.removeItem('lumeray_expenses');
     localStorage.setItem('token', token);
     if (userData) {
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
     } else {
-      // Mock user for local preview if backend doesn't return user details
       const mockUser = { name: "LUMERAY User", email: "user@lumeray.com" };
       localStorage.setItem('user', JSON.stringify(mockUser));
       setUser(mockUser);
@@ -47,6 +48,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    // ✅ FIX: Clear cached expenses on logout so next account
+    // never sees previous account's expenses
+    localStorage.removeItem('lumeray_expenses');
     setIsAuthenticated(false);
     setUser(null);
   };
