@@ -1,16 +1,10 @@
 # LUMERAY – Smart Expense Tracker
 
-<div align="center">
-
-![LUMERAY](https://img.shields.io/badge/LUMERAY-Smart%20Expense%20Tracker-4f46e5?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZD0iTTEzIDIuMDVWMTFoOC45NUExMCAxMCAwIDAgMCAxMyAyLjA1ek0xMSAyLjA1QTEwIDEwIDAgMCAwIDIuMDUgMTFIMTFWMi4wNXpNMi4wNSAxM0ExMCAxMCAwIDAgMCAxMSAyMS45NVYxM0gyLjA1ek0xMyAxMy4wNXY4LjlBMTAgMTAgMCAwIDAgMjEuOTUgMTNIMTN6IiBmaWxsPSJ3aGl0ZSIvPjwvc3ZnPg==)
+![LUMERAY](https://img.shields.io/badge/LUMERAY-Smart%20Expense%20Tracker-blue) ![EXPENSE TRACKER](https://img.shields.io/badge/EXPENSE-TRACKER-green)
 
 **Full-Stack Smart Expense Tracking Platform**
 
-[![GitHub stars](https://img.shields.io/github/stars/mdharishsuhaib/LUMERAY?style=social)](https://github.com/mdharishsuhaib/LUMERAY/stargazers)
-[![GitHub watchers](https://img.shields.io/github/watchers/mdharishsuhaib/LUMERAY?style=social)](https://github.com/mdharishsuhaib/LUMERAY/watchers)
-[![GitHub forks](https://img.shields.io/github/forks/mdharishsuhaib/LUMERAY?style=social)](https://github.com/mdharishsuhaib/LUMERAY/forks)
-
-</div>
+⭐ Star us on GitHub · 🐛 Report Bug · ✨ Request Feature
 
 ---
 
@@ -26,10 +20,9 @@
 - [Backend Setup](#backend-setup)
 - [Frontend Setup](#frontend-setup)
 - [API Reference](#api-reference)
-- [Frontend Pages](#frontend-pages)
-- [Database Schema](#database-schema)
 - [Authentication Flow](#authentication-flow)
 - [Multi-Currency Support](#multi-currency-support)
+- [Database Schema](#database-schema)
 - [Troubleshooting](#troubleshooting)
 - [Future Improvements](#future-improvements)
 - [License](#license)
@@ -42,32 +35,31 @@ LUMERAY is a full-stack intelligent expense tracking platform designed to give u
 
 The platform is structured around two primary modes of interaction:
 
-- `Dashboard Mode` : add, view, and delete expenses with real-time totals grouped by currency.
-- `Analytics Mode` : visualise spending patterns by category using interactive pie charts with mixed-currency awareness.
+- **Dashboard Mode** – add, view, and delete expenses with real-time totals grouped by currency
+- **Analytics Mode** – visualise spending patterns by category using interactive pie charts with mixed-currency awareness
 
 ---
 
 ## Key Features
 
-- Secure user registration and login with bcrypt password hashing.
-- JWT-based authentication with token attached to every API request via Axios interceptors.
-- Per-user expense isolation — each account only sees its own data.
-- Multi-currency support with per-expense currency selection (`USD`, `EUR`, `GBP`, `INR`, `JPY`, `AED`, and 9 more).
-- Default currency preference saved in Settings and respected across the app.
-- Expense dashboard with total grouped by currency — no incorrect cross-currency addition.
-- Full transaction history with date, description, category, amount, and currency.
-- Delete expenses with optimistic UI — instant feedback with automatic revert on failure.
-- Analytics pie chart with mixed-currency warning when expenses span multiple currencies.
-- Profile editing with backend persistence — updated credentials work on next login.
-- Show/hide password toggle on login, register, and profile edit screens.
-- Responsive design — works on mobile, tablet, and desktop.
-- Automatic stale cache detection and clearing on login/logout for account isolation.
+- Secure user registration and login with bcrypt password hashing
+- JWT-based authentication with token attached to every API request via Axios interceptor
+- Complete expense isolation — each account only sees its own data
+- Multi-currency support with per-expense currency selection (USD, INR, GBP, EUR, JPY, AED, and 9 more)
+- Default currency preference saved in Settings and respected across the app
+- Automatic pie chart with mixed-currency warning when expenses span multiple currencies
+- Full transaction history with date, description, category, amount, and currency
+- Delete expenses with optimistic UI — instant feedback with automatic revert on failure
+- Analytics pie chart with mixed-currency warning when expenses span multiple currencies
+- Profile editing with backend persistence — updated credentials work on next login
+- Multi-step password toggle on login, register, and profile with eye icons
+- Automatic state cache detection and clearing on login/logout for account isolation
 
 ---
 
 ## Tech Stack
 
-**Frontend**
+### Frontend
 
 | Technology | Purpose |
 |---|---|
@@ -75,52 +67,53 @@ The platform is structured around two primary modes of interaction:
 | TypeScript | Type safety |
 | Tailwind CSS | Styling |
 | Axios | HTTP client with JWT interceptor |
-| Vite | Build tool |
 | Recharts | Analytics pie chart |
 | Framer Motion | Animations |
 | date-fns | Date formatting |
 | lucide-react | Icons |
 
-**Backend**
+### Backend
 
 | Technology | Purpose |
 |---|---|
 | Node.js | Runtime |
-| Express.js 5 | REST API framework |
+| Express.js | REST API framework |
 | bcryptjs | Password hashing |
 | jsonwebtoken | JWT auth |
-| mysql2 | Database driver |
+| pg | PostgreSQL database driver |
 | dotenv | Environment config |
 
-**Database**
+### Database
 
 | Technology | Purpose |
 |---|---|
-| MySQL (Railway) | Persistent storage for users and expenses |
+| PostgreSQL (Supabase) | Persistent storage for users and expenses — free, hosted, 24/7 |
 
-**Deployment**
+### Deployment
 
 | Service | Purpose |
 |---|---|
 | Cloudflare Pages | Frontend hosting with auto-deploy on push |
 | Render | Backend hosting |
-| Railway | MySQL database |
+| Supabase | PostgreSQL database (free tier, Mumbai region) |
+| UptimeRobot | Keeps backend alive 24/7 by pinging every 5 minutes |
 
 ---
 
 ## System Architecture
 
-- Backend: `Express.js` REST API in `backend/server.js` with route files in `backend/routes/`.
-- Auth layer: JWT middleware in both `server.js` and `routes/expenses.js`.
-- Frontend: React + TypeScript SPA in `src/` built with Vite.
-- State management: React Context — `AuthContext`, `ExpenseContext`, `CurrencyContext`.
-- Data flow:
+- **Backend:** Express.js REST API in `backend/server.js` with route files in `backend/routes/`
+- **Auth layer:** JWT middleware in both `routes/auth.js` and `routes/expenses.js`
+- **Frontend:** React + TypeScript SPA in `src/` built with Vite
+- **State management:** React Context — `AuthContext`, `ExpenseContext`, `CurrencyContext`
 
-1. User registers/logs in → backend returns signed JWT containing `user.id`.
-2. Axios interceptor attaches `Authorization: Bearer <token>` to every request.
-3. Auth middleware on backend decodes JWT and sets `req.userId`.
-4. All expense queries filter by `req.userId` — full per-user isolation.
-5. Frontend caches expenses in `localStorage` and clears on login/logout.
+### Data Flow
+
+1. User registers/logs in → backend returns signed JWT containing `user.id`
+2. Auth layer decodes backend decoder JWT and sets `req.userId` to every request
+3. Auth middleware on frontend verifies JWT — `AuthContext`, `ExpenseContext`
+4. All expense queries filtered by `req.userId` → full per-user data isolation
+5. Frontend caches expenses in `localStorage` and clears on login/logout
 
 ---
 
@@ -128,49 +121,45 @@ The platform is structured around two primary modes of interaction:
 
 ```
 LUMERAY/
-├── backend/                        # Node.js + Express backend
+├── backend/                    # Node.js + Express backend
 │   ├── routes/
-│   │   ├── auth.js                 # Signup and login routes
-│   │   └── expenses.js             # GET, POST, DELETE expense routes
-│   ├── db.js                       # MySQL connection
-│   ├── server.js                   # Main server entry point
-│   └── package.json                # Backend dependencies
-├── src/                            # React + TypeScript frontend
+│   │   ├── auth.js             # Signup and login routes
+│   │   └── expenses.js         # GET, POST, DELETE expense routes
+│   ├── db.js                   # PostgreSQL connection (Supabase via pg Pool)
+│   ├── server.js               # Main server entry point
+│   └── package.json            # Backend dependencies
+├── src/                        # React + TypeScript frontend
 │   ├── components/
-│   │   ├── DashboardLayout.tsx     # Sidebar, mobile nav, logout modal
-│   │   └── Navbar.tsx              # Public landing page navbar
+│   │   ├── DashboardAgent.tsx  # Tracker, radar key, Tailwind modal
+│   │   └── ...
 │   ├── context/
-│   │   ├── AuthContext.tsx         # Auth state, login, logout, updateUser
-│   │   ├── ExpenseContext.tsx      # Expense CRUD, cache management
-│   │   └── CurrencyContext.tsx     # Default currency preference
+│   │   ├── AuthContext.tsx     # Auth state, login, logout, updateUser
+│   │   ├── TagsContext.tsx     # Expense DDO, cache management
+│   │   └── CurrencyContext.tsx # Currency DDO + Default currency preference
 │   ├── pages/
-│   │   ├── Home.tsx                # Public landing page
-│   │   ├── Login.tsx               # Login page
-│   │   ├── Register.tsx            # Registration page
-│   │   └── dashboard/
-│   │       ├── Overview.tsx        # Dashboard with add expense form
-│   │       ├── Transactions.tsx    # Full transaction table with delete
-│   │       ├── Analytics.tsx       # Pie chart analytics
-│   │       └── Settings.tsx        # Profile and currency settings
-│   ├── api.ts                      # Axios instance with JWT interceptor
-│   ├── types.ts                    # TypeScript interfaces
-│   ├── main.tsx                    # React entry point
-│   └── index.css                   # Tailwind base styles
-├── index.html                      # HTML entry point
-├── wrangler.toml                   # Cloudflare Pages config
-├── vite.config.ts                  # Vite build config
-├── tailwind.config.js              # Tailwind config
-└── README.md
+│   │   ├── Overview.tsx        # Public landing page
+│   │   ├── Login.tsx           # Login page
+│   │   ├── Register.tsx        # Register page
+│   │   ├── Dashboard.tsx       # Dashboard with add expense form
+│   │   ├── Transactions.tsx    # Full transaction table with delete button
+│   │   ├── Analytics.tsx       # Pie chart grouped by category with multi-currency warning
+│   │   └── Settings.tsx        # Default currency preference and profile edit
+│   ├── api.ts                  # Axios instance
+│   ├── App.tsx                 # React entry point
+│   ├── main.tsx                # HTML entry point
+│   └── index.css               # Global styles
+├── index.html                  # HTML template
+├── vite.config.ts              # Vite build config
+└── tailwind.config.js          # Tailwind config
 ```
 
 ---
 
 ## Prerequisites
 
-- Node.js 18+ and npm.
-- A MySQL database (Railway recommended for free hosted MySQL).
-- A Render account for backend hosting.
-- A Cloudflare account for frontend hosting.
+- Node.js 18+ and npm
+- A Supabase account (free) — recommended for hosted PostgreSQL
+- A Cloudflare account for frontend hosting
 
 ---
 
@@ -188,8 +177,8 @@ npm install
 
 Open:
 
-- Backend health: `https://lumeray.onrender.com/`
-- Frontend: `https://lumeray.mdharishsuhaib.workers.dev`
+- **Backend health:** `https://lumeray.onrender.com/`
+- **Frontend:** `https://lumeray.mdharishsuhaib.workers.dev`
 
 ---
 
@@ -200,42 +189,60 @@ Open:
 Inside the `backend/` folder, create a `.env` file:
 
 ```env
-DB_HOST=your_railway_host
-DB_USER=root
-DB_PASSWORD=your_password
-DB_NAME=railway
-DB_PORT=your_port
-JWT_SECRET=your_secret_key
+JWT_SECRET=your_jwt_secret
 PORT=5000
+DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@YOUR_SUPABASE_HOST:5432/postgres
 ```
+
+> ⚠️ Use the **Transaction Pooler URL** from Supabase for best compatibility on hosted platforms like Render:
+> `postgresql://postgres.xxxx:PASSWORD@aws-0-ap-south-1.pooler.supabase.com:6543/postgres`
+
+---
 
 ### Step 2: Create the Database Tables
 
-Run the following SQL in your Railway MySQL dashboard:
+Run the following SQL in your **Supabase SQL Editor** dashboard:
 
 **Users table:**
+
 ```sql
 CREATE TABLE IF NOT EXISTS users (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  name VARCHAR(100),
-  email VARCHAR(100) UNIQUE,
-  password VARCHAR(255)
+  id BIGSERIAL PRIMARY KEY,
+  name VARCHAR(255) DEFAULT NULL,
+  email VARCHAR(255) DEFAULT NULL UNIQUE,
+  password VARCHAR(255) DEFAULT NULL
 );
 ```
 
 **Expenses table:**
+
 ```sql
 CREATE TABLE IF NOT EXISTS expenses (
-  id INT AUTO_INCREMENT PRIMARY KEY,
+  id SERIAL PRIMARY KEY,
   user_id INT NOT NULL,
-  amount DECIMAL(10,2) NOT NULL,
+  amount FLOAT NOT NULL,
   category VARCHAR(100),
   description VARCHAR(255),
   date DATE,
   currency VARCHAR(10) DEFAULT 'USD',
-  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  created_at VARCHAR(255) DEFAULT 'CURRENT_TIMESTAMP'
 );
 ```
+
+**Enable Row Level Security (RLS):**
+
+```sql
+ALTER TABLE public.expenses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.users ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Allow all for service" ON public.expenses
+FOR ALL USING (true) WITH CHECK (true);
+
+CREATE POLICY "Allow all for service" ON public.users
+FOR ALL USING (true) WITH CHECK (true);
+```
+
+---
 
 ### Step 3: Run the Backend
 
@@ -255,7 +262,7 @@ curl http://localhost:5000/
 Expected response:
 
 ```
-🚀 LUMERAY Backend Running
+LUMERAY Backend Running
 ```
 
 ---
@@ -276,7 +283,7 @@ Build for production:
 npm run build
 ```
 
-Output goes to `dist/`.
+Output goes to `dist/`
 
 ---
 
@@ -284,7 +291,7 @@ Output goes to `dist/`.
 
 Base URL: `https://lumeray.onrender.com/api`
 
-All expense endpoints require `Authorization: Bearer <token>` header.
+All expense endpoints require `Authorization: Bearer <token>`
 
 ---
 
@@ -292,18 +299,16 @@ All expense endpoints require `Authorization: Bearer <token>` header.
 
 Register a new user.
 
-Request body:
-
+**Request body:**
 ```json
 {
-  "name": "Mohammed Haris",
-  "email": "haris@example.com",
+  "name": "Mohammed Harish",
+  "email": "harish@example.com",
   "password": "password123"
 }
 ```
 
-Response:
-
+**Response:**
 ```json
 {
   "message": "Signup successful"
@@ -316,24 +321,19 @@ Response:
 
 Login and receive a JWT token.
 
-Request body:
-
+**Request body:**
 ```json
 {
-  "email": "haris@example.com",
+  "email": "harish@example.com",
   "password": "password123"
 }
 ```
 
-Response:
-
+**Response:**
 ```json
 {
   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "user": {
-    "name": "Mohammed Haris",
-    "email": "haris@example.com"
-  }
+  "user": { "name": "Mohammed Harish", "email": "harish@example.com" }
 }
 ```
 
@@ -343,19 +343,18 @@ Response:
 
 Fetch all expenses for the authenticated user.
 
-Response:
-
+**Response:**
 ```json
 [
   {
     "id": 1,
-    "user_id": 3,
-    "amount": 500.00,
+    "user_id": 15,
+    "amount": 700.00,
     "category": "Food",
-    "description": "Lunch at cafe",
-    "date": "2026-03-19",
+    "description": "lunch at cafe",
+    "date": "2026-03-14",
     "currency": "INR",
-    "created_at": "2026-03-19T10:30:00.000Z"
+    "created_at": "2026-03-14 10:00:0002"
   }
 ]
 ```
@@ -366,20 +365,18 @@ Response:
 
 Add a new expense for the authenticated user.
 
-Request body:
-
+**Request body:**
 ```json
 {
-  "amount": 500,
+  "amount": 700,
   "category": "Food",
-  "description": "Lunch at cafe",
-  "date": "2026-03-19",
+  "description": "lunch at cafe",
+  "date": "2026-03-29",
   "currency": "INR"
 }
 ```
 
-Response:
-
+**Response:**
 ```json
 {
   "message": "Expense added",
@@ -393,8 +390,7 @@ Response:
 
 Delete an expense by ID. Only deletes if it belongs to the authenticated user.
 
-Response:
-
+**Response:**
 ```json
 {
   "message": "Expense deleted"
@@ -407,25 +403,20 @@ Response:
 
 Update user profile (name, email, and optionally password).
 
-Request body:
-
+**Request body:**
 ```json
 {
   "name": "New Name",
-  "email": "newemail@example.com",
+  "email": "updated@example.com",
   "password": "newpassword123"
 }
 ```
 
-Response:
-
+**Response:**
 ```json
 {
   "message": "Profile updated",
-  "user": {
-    "name": "New Name",
-    "email": "newemail@example.com"
-  }
+  "user": { "name": "New Name", "email": "updated@example.com" }
 }
 ```
 
@@ -435,8 +426,8 @@ Response:
 
 | Route | Description |
 |---|---|
-| `/` | Public landing page — hero, features, how-to-use |
-| `/login` | Login page with email/password validation |
+| `/` | Public landing page — lists features, how-to-use |
+| `/login` | Login page with form validation |
 | `/register` | Registration page with password strength validation |
 | `/dashboard` | Overview — add expense form, total by currency, recent transactions |
 | `/dashboard/transactions` | Full transaction table with delete button |
@@ -447,38 +438,38 @@ Response:
 
 ## Database Schema
 
-### `users`
+### users
 
 | Column | Type | Constraints |
 |---|---|---|
-| `id` | INT | AUTO_INCREMENT, PRIMARY KEY |
-| `name` | VARCHAR(100) | — |
-| `email` | VARCHAR(100) | UNIQUE |
-| `password` | VARCHAR(255) | bcrypt hashed |
+| id | BIGSERIAL | AUTO_INCREMENT, PRIMARY KEY |
+| name | VARCHAR(255) | — |
+| email | VARCHAR(255) | UNIQUE |
+| password | VARCHAR(255) | bcrypt hashed |
 
-### `expenses`
+### expenses
 
 | Column | Type | Constraints |
 |---|---|---|
-| `id` | INT | AUTO_INCREMENT, PRIMARY KEY |
-| `user_id` | INT | NOT NULL |
-| `amount` | DECIMAL(10,2) | NOT NULL |
-| `category` | VARCHAR(100) | — |
-| `description` | VARCHAR(255) | — |
-| `date` | DATE | — |
-| `currency` | VARCHAR(10) | DEFAULT 'USD' |
-| `created_at` | TIMESTAMP | DEFAULT CURRENT_TIMESTAMP |
+| id | SERIAL | AUTO_INCREMENT, PRIMARY KEY |
+| user_id | INT | NOT NULL |
+| amount | FLOAT | NOT NULL |
+| category | VARCHAR(100) | — |
+| description | VARCHAR(255) | — |
+| date | DATE | — |
+| currency | VARCHAR(10) | DEFAULT 'USD' |
+| created_at | VARCHAR(255) | DEFAULT CURRENT_TIMESTAMP |
 
 ---
 
 ## Authentication Flow
 
-1. User registers → password hashed with `bcrypt` (10 salt rounds) → stored in MySQL.
-2. User logs in → bcrypt compares password → backend signs JWT with `{ id: user.id }`.
-3. JWT stored in `localStorage` on frontend.
-4. Axios interceptor reads token from `localStorage` and sets `Authorization: Bearer <token>` on every request.
-5. Backend middleware verifies JWT → extracts `req.userId` → all queries filter by this ID.
-6. On logout → `localStorage` clears `token`, `user`, and `lumeray_expenses` to prevent data leakage between accounts.
+1. User registers — password hashed with bcrypt (10 salt rounds) — stored in Supabase PostgreSQL
+2. User logs in — bcrypt compares password — backend signs JWT with `{ id: user.id }`
+3. JWT stored in `localStorage` on frontend
+4. Axios interceptor reads token from `localStorage` and sets `Authorization: Bearer` header on every request
+5. Backend middleware verifies JWT → extracts `req.userId` → all queries filtered by this ID
+6. On logout → `localStorage` clears `token`, `user`, and `lumeray_expenses` to prevent data linkage between accounts
 
 ---
 
@@ -504,10 +495,10 @@ LUMERAY supports 15 major world currencies:
 | KRW | South Korean Won |
 | BRL | Brazilian Real |
 
-- Each expense stores its own currency at the time of creation.
-- The Dashboard groups totals by currency — `₹500.00 INR` and `$200.00 USD` are never incorrectly added together.
-- The Analytics page shows a mixed-currency warning if expenses span multiple currencies.
-- Default currency is set in Settings and persisted in `localStorage`.
+- Each expense stores its own currency at the time of creation
+- The Dashboard groups totals by currency — totals for `INR` and `USD` etc. are never incorrectly added together
+- The Analytics page shows a mixed-currency warning if expenses span multiple currencies
+- Default currency is set in Settings and persisted in `localStorage`
 
 ---
 
@@ -515,24 +506,25 @@ LUMERAY supports 15 major world currencies:
 
 **Backend not responding / API request failed**
 
-Render's free tier spins down after inactivity. Wait 30–60 seconds for it to wake up, then retry.
+Render's free tier spins down after inactivity. Wait 30–60 seconds for it to wake up, then retry. UptimeRobot is configured to ping every 5 minutes to prevent this.
 
 **Expenses showing from another account**
 
-Clear `lumeray_expenses` from browser localStorage: F12 → Application → Local Storage → delete the key. This is handled automatically on login/logout in the latest version.
+Clear `lumeray_expenses` from browser localStorage (F12 → Application → Local Storage → delete the key). This is handled automatically on login/logout in the latest version.
 
-**Field 'id' doesn't have a default value**
+**Expense has no default value**
 
-The `expenses` table `id` column is missing `AUTO_INCREMENT`. Fix with:
+The `created_at` column is missing `AUTO_TIMESTAMP`. Fix with:
+
 ```sql
-ALTER TABLE expenses MODIFY id INT AUTO_INCREMENT;
+ALTER TABLE expenses MODIFY created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
 ```
 
-**Build fails on Cloudflare — "Missing script: build"**
+**Build fail on Cloudflare — "Missing script: build"**
 
-The root `package.json` is missing or incorrect. Ensure `package.json` at the project root is the frontend one (containing `"build": "vite build"`), not the backend one.
+The root `package.json` is missing or incorrect. Ensure `package.json` at the project root is the frontend one containing `"build": "vite build"`, not the backend one.
 
-**npm ci fails — lock file out of sync**
+**`npm start` fails — look file out of sync**
 
 Run `npm install` locally to regenerate `package-lock.json`, then commit and push.
 
@@ -544,18 +536,18 @@ The Axios interceptor in `src/api.ts` is missing. Ensure it reads `localStorage.
 
 ## Future Improvements
 
-- AI-based spending recommendations and smart financial insights.
-- Budget limits per category with overspend alerts.
-- Recurring expense scheduling.
-- Export transactions as CSV or PDF.
-- Live currency conversion using exchange rate API.
-- Dark mode support.
+- AI-based spending recommendations and smart financial insights
+- Budget limits per category with overspend alerts
+- Recurring expense scheduling
+- Export transactions as CSV or PDF
+- Live currency conversion using exchange rate API
+- Dark mode support
 
 ---
 
 ## Author
 
-**Mohammed Haris Suhaib M**
+**Mohammed Harish Suhaib M**
 
 GitHub: [mdharishsuhaib](https://github.com/mdharishsuhaib)
 
@@ -565,14 +557,14 @@ GitHub: [mdharishsuhaib](https://github.com/mdharishsuhaib)
 
 MIT License
 
-Copyright (c) 2026 Mohammed Haris Suhaib M
+Copyright (c) 2026 Mohammed Harish Suhaib M
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 ---
 
-⭐ If you found LUMERAY useful, please consider giving it a star on GitHub!
+> ⭐ If you found LUMERAY useful, please consider giving it a star on GitHub!
